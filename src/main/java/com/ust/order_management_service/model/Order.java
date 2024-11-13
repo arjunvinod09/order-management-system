@@ -19,17 +19,17 @@ public class Order {
     private OrderStatus status;
     private Double totalAmount;
     private LocalDateTime createdAt;
-//    private LocalDateTime updatedAt;
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-//        updatedAt = LocalDateTime.now();
-    }
-//    @PreUpdate
-//    protected void onUpdate() {
-//        updatedAt = LocalDateTime.now();
-//    }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", orphanRemoval = true)
     private List<OrderItem> items;
+
+    @PrePersist
+    protected void setParent() {
+        createdAt = LocalDateTime.now();
+        if (items != null) {
+            for (OrderItem item : items) {
+                item.setOrder(this);
+            }
+        }
+    }
 }
