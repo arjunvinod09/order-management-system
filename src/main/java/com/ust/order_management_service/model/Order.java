@@ -30,6 +30,6 @@ public class Order {
 //        updatedAt = LocalDateTime.now();
 //    }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderDTO")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderItem> items;
 }
