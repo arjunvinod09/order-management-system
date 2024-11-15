@@ -1,9 +1,13 @@
 package com.ust.order_management_service.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 public class OrderItem {
     @Id
@@ -16,6 +20,7 @@ public class OrderItem {
     private Double price;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "order_id")
     private Order order;
 }
