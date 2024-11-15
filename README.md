@@ -51,3 +51,10 @@ Order 2: http://localhost:9000/api/v1/orders
 }
 ]
 }
+
+
+**HANDLED EXCEPTION CASES SO FAR:**
+* All the validation cases are handled and appropriate message is being displayed
+* Searching by an invalid userId
+* Searching by an invalid orderId
+* Searching for all orders by a user handled both non existing user and no orders placed by user
