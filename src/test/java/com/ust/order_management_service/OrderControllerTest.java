@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -52,8 +51,13 @@ public class OrderControllerTest {
     @Test
     @DisplayName("Created Order")
     public void givenOrderToSaveThenShouldReturnOrder(){
+        var orderDto = convertor.toDTO(order);
+
         when(orderService.createOrder(any(Order.class))).thenReturn(order);
+        when(convertor.toDTO(order)).thenReturn(orderDto);
+
         ResponseEntity<OrderDTO> response = orderController.createOrder(convertor.toDTO(order));
+
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         assertEquals(response.getBody(), convertor.toDTO(order));
 
@@ -62,9 +66,13 @@ public class OrderControllerTest {
     @Test
     @DisplayName("Get Order By Id")
     public void givenOrderIdThenShouldReturnRespectiveOrder(){
+        var orderDto = convertor.toDTO(order);
+
         when(orderService.getOrderById(order.getId())).thenReturn(Optional.of(order));
+        when(convertor.toDTO(order)).thenReturn(orderDto);
+
         ResponseEntity<Object> response = orderController.getOrderById(order.getId());
-        System.out.println(response);
+
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         assertEquals(response.getBody(), convertor.toDTO(order));
     }
@@ -72,12 +80,17 @@ public class OrderControllerTest {
     @Test
     @DisplayName("Get All Orders By UserId")
     public void givenUserIdThenShouldReturnAllOrders(){
+        List<Order> orders = List.of(order);
+        List<OrderDTO> orderDTOS = convertor.toList(orders);
+
         when(orderService.getAllOrdersByUserId(order.getUserId())).thenReturn(List.of(order));
+        when(convertor.toList(orders)).thenReturn(orderDTOS);
+
         ResponseEntity<Object> response = orderController.getAllOrdersByUserId(order.getUserId());
 //        List<OrderDTO> body = (List<OrderDTO>) response.getBody();
 //        assertEquals(1,List.of(convertor.toDTO(order)).size());
+        System.out.println(response);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
-        System.out.println(response.getBody());//List<OrderDto>
-        assertEquals(response.getBody(), List.of(convertor.toDTO(order)));
+        assertEquals(response.getBody(), orderDTOS);
     }
 }
