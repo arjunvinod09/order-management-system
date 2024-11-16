@@ -20,6 +20,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order createOrder(Order order) {
+
         return orderRepository.save(order);
     }
 
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<Order> getAllOrdersByUserId(Long userId) {
+
         return orderRepository.findByUserId(userId);
     }
 
