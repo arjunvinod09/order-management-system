@@ -14,11 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
-
-
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -33,6 +30,7 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody OrderDTO orderdto){
+        var user = orderService.getUserById(orderdto.userId()).orElseThrow(() -> new UserNotFoundException("No user with id "+ orderdto.userId() +" exists inorder to place order"));
         orderService.createOrder(convertor.toEntity(orderdto));
         return new ResponseEntity<>(orderdto, HttpStatus.OK);
     }
